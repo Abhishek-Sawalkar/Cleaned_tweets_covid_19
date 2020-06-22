@@ -7,7 +7,6 @@
 # -*- coding: utf-8 -*-
 """
 Spyder Editor
-
 This is a twitter scraping program.
 """
 import GetOldTweets3 as got
@@ -16,9 +15,9 @@ import numpy as np
 
 
 
-text_query = ['Lockdown'] #
-count = 100
-maharashtra=["Pune", "Mumbai", "Delhi"]
+text_query = ['Lockdown', 'coronavirus', 'covid19'] #
+count = 1000
+maharashtra=["Pune"] #, "Mumbai", "Delhi"
 
 # Function that pulls tweets based on a general search query and turns to csv file
 
@@ -29,26 +28,23 @@ def text_query_to_csv(text_query, count, place):
     # Creation of query object
     leng = 0
     i=0
-    while leng < count:
-        tweetCriteria = got.manager.TweetCriteria().setQuerySearch(text_query[i]).setLang('en').setMaxTweets(count-leng).setNear(place).setSince("2020-05-28").setUntil("2020-05-31")
+    for query in text_query:
+        tweetCriteria = got.manager.TweetCriteria().setQuerySearch(query).setLang('en').setMaxTweets(count).setNear(place).setSince("2020-05-01").setUntil("2020-05-31")
 
             # Creation of list that contains all tweets
         tweets = got.manager.TweetManager.getTweets(tweetCriteria)
             # Creating list of chosen tweet data
-        text_tweets = [[place, text_query[0], tweet.date, tweet.text,tweet.id,tweet.username,tweet.geo,tweet.retweets,tweet.favorites,tweet.hashtags] for tweet in tweets]
+        text_tweets = [[place, query, tweet.date, tweet.text,tweet.id,tweet.username,tweet.geo,tweet.retweets,tweet.favorites,tweet.hashtags] for tweet in tweets]
 
             # Creation of dataframe from tweets
         if i == 0:
             tweets_df = pd.DataFrame(text_tweets, columns = ['Place', 'Query', 'Datetime', 'Text','TweetID','username','geo','retweets','favourites','hashtags'])
         else:
             temp = pd.DataFrame(text_tweets, columns = ['Place', 'Query', 'Datetime', 'Text','TweetID','username','geo','retweets','favourites','hashtags'])
-            tweets_df = tweets_df.append(temp)
-        leng = len(tweets_df)        
-        
-        if text_query[-1] == text_query[i]:
-            break
+            tweets_df = tweets_df.append(temp)  
         i+=1
-        
+        tweets_df = tweets_df.sample(frac=1).reset_index(drop=True)
+        tweets_df = tweets_df.head(1000)
     return tweets_df   
  
 #     tweetCriteria = got.manager.TweetCriteria().setQuerySearch(text_query[0]).setLang('en').setMaxTweets(count).setNear(place).setSince("2020-05-28").setUntil("2020-05-31")
