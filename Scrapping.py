@@ -46,7 +46,8 @@ def text_query_to_csv(text_query, count, place):
         #tweets_df = pd.DataFrame(tweets_df, columns = ['Place', 'Query', 'Datetime', 'Text','TweetID','username','geo','retweets','favourites','hashtags'])
         #tweets_df = tweets_df.iloc[np.random.permutation(len(tweets_df))]
         tweets_df = tweets_df.sample(frac=1).reset_index(drop=True)
-        tweets_df = tweets_df.head(1000)
+        if len(tweets_df) > 1000:
+            tweets_df = tweets_df.head(1000)
     return tweets_df   
  
 #     tweetCriteria = got.manager.TweetCriteria().setQuerySearch(text_query[0]).setLang('en').setMaxTweets(count).setNear(place).setSince("2020-05-28").setUntil("2020-05-31")
