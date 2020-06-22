@@ -18,7 +18,7 @@ import numpy as np
 
 text_query = ['Lockdown'] #
 count = 100
-geocode=["Pune", "Mumbai", "Delhi"]
+maharashtra=["Pune", "Mumbai", "Delhi"]
 
 # Function that pulls tweets based on a general search query and turns to csv file
 
@@ -78,11 +78,12 @@ def text_query_to_csv(text_query, count, place):
 df=pd.DataFrame()
 temp=pd.DataFrame()
 i=0
-for place in geocode: 
+for place in maharashtra: 
     temp=text_query_to_csv(text_query, count, place)
     if i==0:
         df = temp
     else:
         df = df.append(temp)
     i+=1
-
+    
+df.to_csv('maharashtra.csv')
