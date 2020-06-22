@@ -17,7 +17,7 @@ import numpy as np
 
 text_query = ['Lockdown', 'coronavirus', 'covid19'] #
 count = 1000
-maharashtra=["Pune"] #, "Mumbai", "Delhi"
+maharashtra=["Pune", "Mumbai", "Delhi"] #
 
 # Function that pulls tweets based on a general search query and turns to csv file
 
@@ -43,6 +43,8 @@ def text_query_to_csv(text_query, count, place):
             temp = pd.DataFrame(text_tweets, columns = ['Place', 'Query', 'Datetime', 'Text','TweetID','username','geo','retweets','favourites','hashtags'])
             tweets_df = tweets_df.append(temp)  
         i+=1
+        #tweets_df = pd.DataFrame(tweets_df, columns = ['Place', 'Query', 'Datetime', 'Text','TweetID','username','geo','retweets','favourites','hashtags'])
+        #tweets_df = tweets_df.iloc[np.random.permutation(len(tweets_df))]
         tweets_df = tweets_df.sample(frac=1).reset_index(drop=True)
         tweets_df = tweets_df.head(1000)
     return tweets_df   
