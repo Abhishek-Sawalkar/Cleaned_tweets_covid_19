@@ -15,21 +15,34 @@ import numpy as np
 
 
 
-text_query = ['Lockdown', 'coronavirus', 'covid19'] # THIS
+text_query = ['coronavirus', 'covid19'] # THIS 'Lockdown', 
+start_date = "2020-05-01"
+end_date = "2020-05-31"
 count = 1000
-maharashtra=["Pune", "Mumbai", "Delhi"] # THIS
+states = ["Odisha", "Punjab", "Rajasthan", "Sikkim", "Tamil_Nadu", "Telangana", "Tripura", "Uttarakhand", "Uttar Pradesh", "West_Bengal"]
+
+cities =    [["Bhubaneswar", "Cuttack", "Rourkela", "Brahmapur", "Sambalpur"],
+             ["Chandigarh", "Ludhiana", "Amritsar", "Jalandhar", "Patiala"],
+             ["Jaipur", "Jodhpur", "Kota", "Bikaner", "Ajmer"],
+             ["Gangtok", "Dzongu", "Geyzing", "Mangan", "Namchi"],
+             ["Chennai", "Coimbatore", "Madurai", "Tiruchirappalli", "Tiruppur"],
+             ["Hyderabad", "Warangal", "Nizamabad", "Khammam", "Karimnagar"],
+             ["Agartala", "Kailashahar", "Kamalpur", "Khowai", "Kumarghat"],
+             ["Dehradun", "Nainital", "Haridwar", "Roorkee", "Rudrapur"],
+             ["Lucknow", "Kanpur", "Ghaziabad", "Agra", "Meerut"],
+             ["Kolkata", "Asansol", "Siliguri", "Durgapur", "Bardhaman"]] # THIS
 
 # Function that pulls tweets based on a general search query and turns to csv file
 
 # Parameters: (text query you want to search), (max number of most recent tweets to pull from)
 
-def text_query_to_csv(text_query, count, place):
+def text_query_to_csv(text_query, count, place, start_date, end_date):
     # Creation of query object
     # Creation of query object
     leng = 0
     i=0
     for query in text_query:
-        tweetCriteria = got.manager.TweetCriteria().setQuerySearch(query).setLang('en').setMaxTweets(count).setNear(place).setSince("2020-05-01").setUntil("2020-05-31")
+        tweetCriteria = got.manager.TweetCriteria().setQuerySearch(query).setLang('en').setMaxTweets(count).setNear(place).setSince(start_date).setUntil(end_date)
         # THIS (setSince("2020-05-01").setUntil("2020-05-31")) 
             # Creation of list that contains all tweets
         tweets = got.manager.TweetManager.getTweets(tweetCriteria)
@@ -50,39 +63,17 @@ def text_query_to_csv(text_query, count, place):
             tweets_df = tweets_df.head(1000)
     return tweets_df   
  
-#     tweetCriteria = got.manager.TweetCriteria().setQuerySearch(text_query[0]).setLang('en').setMaxTweets(count).setNear(place).setSince("2020-05-28").setUntil("2020-05-31")
-    
-#     # Creation of list that contains all tweets
-#     tweets = got.manager.TweetManager.getTweets(tweetCriteria)
-#     # Creating list of chosen tweet data
-#     text_tweets = [[place, text_query[0], tweet.date, tweet.text,tweet.id,tweet.username,tweet.geo,tweet.retweets,tweet.favorites,tweet.hashtags] for tweet in tweets]
-#     print(f'len(text_tweets): {len(text_tweets)}')
-#     tweets_df1 = pd.DataFrame(text_tweets, columns = ['Place', 'Query', 'Datetime', 'Text','TweetID','username','geo','retweets','favourites','hashtags'])
-#     if len(text_tweets) < count:
-#         print('True')
-#         tweetCriteria = got.manager.TweetCriteria().setQuerySearch(text_query[1]).setLang('en').setMaxTweets(count-len(tweets_df1)).setNear(place).setSince("2020-05-28").setUntil("2020-05-31")
-#         # Creation of list that contains all tweets
-#         tweets = got.manager.TweetManager.getTweets(tweetCriteria)
-#         # Creating list of chosen tweet data
-#         temp2 = [[place, text_query[1], tweet.date, tweet.text,tweet.id,tweet.username,tweet.geo,tweet.retweets,tweet.favorites,tweet.hashtags] for tweet in tweets]
-#         print(f'len(temp): {len(temp2)}')
-#         tweets_df2 = pd.DataFrame(temp2, columns = ['Place', 'Query', 'Datetime', 'Text','TweetID','username','geo','retweets','favourites','hashtags'])
-#         tweets_df1 = tweets_df1.append(tweets_df2)
-    
-#     # Creation of dataframe from tweets
-    
-    
-#     return tweets_df1
     
 df=pd.DataFrame()
 temp=pd.DataFrame()
 i=0
-for place in maharashtra: 
-    temp=text_query_to_csv(text_query, count, place)
-    if i==0:
-        df = temp
-    else:
-        df = df.append(temp)
-    i+=1
-    
-df.to_csv('maharashtra.csv')
+for city in cities:   
+    for place in city: 
+        temp=text_query_to_csv(text_query, count, place, start_date, end_date)
+        if i==0:
+            df = temp
+        else:
+            df = df.append(temp)
+        i+=1
+
+df.to_csv('march_data.csv')
