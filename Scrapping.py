@@ -16,9 +16,9 @@ import numpy as np
 
 
 text_query = ['coronavirus', 'covid19'] # THIS 'Lockdown', 
-start_date = "2020-05-01"
-end_date = "2020-05-31"
-count = 1000
+start_date = "2020-03-01"
+end_date = "2020-03-31"
+count = 5000
 states = ["Odisha", "Punjab", "Rajasthan", "Sikkim", "Tamil_Nadu", "Telangana", "Tripura", "Uttarakhand", "Uttar Pradesh", "West_Bengal"]
 
 cities =    [["Bhubaneswar", "Cuttack", "Rourkela", "Brahmapur", "Sambalpur"],
@@ -59,8 +59,8 @@ def text_query_to_csv(text_query, count, place, start_date, end_date):
         #tweets_df = pd.DataFrame(tweets_df, columns = ['Place', 'Query', 'Datetime', 'Text','TweetID','username','geo','retweets','favourites','hashtags'])
         #tweets_df = tweets_df.iloc[np.random.permutation(len(tweets_df))]
         tweets_df = tweets_df.sample(frac=1).reset_index(drop=True)
-        if len(tweets_df) > 1000:
-            tweets_df = tweets_df.head(1000)
+        if len(tweets_df) > count:
+            tweets_df = tweets_df.head(count)
     return tweets_df   
  
     
