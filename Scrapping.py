@@ -15,9 +15,9 @@ import numpy as np
 
 
 
-text_query = ['Lockdown', 'coronavirus', 'covid19'] #
+text_query = ['Lockdown', 'coronavirus', 'covid19'] # THIS
 count = 1000
-maharashtra=["Pune", "Mumbai", "Delhi"] #
+maharashtra=["Pune", "Mumbai", "Delhi"] # THIS
 
 # Function that pulls tweets based on a general search query and turns to csv file
 
@@ -30,7 +30,7 @@ def text_query_to_csv(text_query, count, place):
     i=0
     for query in text_query:
         tweetCriteria = got.manager.TweetCriteria().setQuerySearch(query).setLang('en').setMaxTweets(count).setNear(place).setSince("2020-05-01").setUntil("2020-05-31")
-
+        # THIS (setSince("2020-05-01").setUntil("2020-05-31")) 
             # Creation of list that contains all tweets
         tweets = got.manager.TweetManager.getTweets(tweetCriteria)
             # Creating list of chosen tweet data
